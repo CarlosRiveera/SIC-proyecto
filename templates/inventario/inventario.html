@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block links %}
+<!-- Bootstrap select CSS -->
+<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
+<!-- Custom CSS -->
+<link type="text/css" rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+{% block content %}
+<!-- Inicio contenido -->
+     
+        <!--Pegando nueva tabla-->
+<div class="tabla" style="margin-left:80px; margin-right: 80px">
+<table class="table table-bordered" style="border: 1px solid #ddd !important;">
+  <thead>
+    {%if kardex %}
+    <tr class="row" style="background-color: #B1A2D6;">
+      <th class="col-4 casilla" colspan="4">Produto: {{kardex.producto.nombre}}</th>
+      <th class="col-4 casilla" colspan="4">Stock mínimo: {{kardex.producto.stockMinimo}}</th>
+      <th class="col-4 casilla" colspan="4">Stock máximo: {{kardex.producto.stockMaximo}}</th>
+    </tr>
+    {% endif %}
+    <tr class="row" style="background-color: #E9C69A;">
+      <th class="col-1"></th>
+      <th class="col-1"></th>
+      <th class="col-1"></th>
+      <th class="col-1"></th>
+      <th class="col-1"></th>
+      <th class="col-2 casilla" style="text-align: center;" colspan="2">Entradas</th>
+      <th class="col-2 casilla" style="text-align: center;"colspan="2">Salidas</th>
+      <th class="col-2 casilla" style="text-align: center;"colspan="2"> Saldo</th>
+
+      <th></th>
+    </tr> 
+    <tr class="row" style="background-color: #E9C69A;">
+      <th class="col-1">Fecha</th>
+      <th class="col-1">Tipo</th>
+      <th class="col-1">Factura</th>
+      <!--campo para comprobacion-->
+      <th class="col-1">Sobrante</th>
+      <th class="col-1">Precio Unitario</th>
+      <th class="col-1">Cantidad</th>
+      <th class="col-1">Valores</th>
+      <th class="col-1">Cantidad</th>
+      <th class="col-1">Valores</th>
+      <th class="col-1">Cantidad</th>
+      <th class="col-1">Valores</th>
+      <!--campo para comprobacion-->
+      <th class="col-1" style="text-align: center;">Control</th>
+    </tr>
+  </thead>
+ <!--probando para una sola fila, se debe usar un foreach para mandar a traer todos los datos-->
+  <tbody>
+    {% for lp in lineaPeriodo %}
+    <tr class="row" style="background-color: #A2D6C2;"> 
+      <td class="col-1">{{lp.fecha}}</td>
+      <td class="col-1">{{lp.tipoTransaccion}}</td>
+      <td class="col-1">{{lp.factura}}</td>
+      <td class="col-1">{{lp.cantidadSobrante}}</td>
+      <td class="col-1">${{lp.valorUnitario|floatformat:2}}</td>
+      <td class="col-1"style="background-color: #8EF958;">{{lp.cantidadEntrada}}</td>
+      <td class="col-1"style="background-color: #8EF958;">${{lp.valorEntrada|floatformat:2}}</td>
+      <td class="col-1"style="background-color: #FB8F78;">{{lp.cantidadSalida}}</td>
+      <td class="col-1"style="background-color: #FB8F78;">${{lp.valorSalida|floatformat:2}}</td>
+      <td class="col-1"style="background-color: #F9F458;">{{lp.cantidadExistencia}}</td>
+      <td class="col-1"style="background-color: #F9F458;">${{lp.valorExistencia|floatformat:2}}</td>
+      <td class="col-1">${{lp.comprobacion|floatformat:2}}</td>
+    </tr>
+    {% endfor %}
+    <tr class="row" style="background-color: #F9F458;">   
+    {% if comprobacion %}   
+      <td class="col-11" colspan="11">Comprobacion: </td>
+      <td class="col-1">${{comprobacion|floatformat:2}}</td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+</div>
+      <br/>
+      <!--div class="row justify-content-end">
+        <button type="button" class="btn btn-outline-primary ">Actualizar</button>
+        <button type="button" class="btn btn-outline-success">Imprimir reporte</button>
+      </div-->
+    </div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/bootstrap-select.min.js' %}"></script>
+{% csrf_token %}
+{% endblock %}

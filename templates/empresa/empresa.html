@@ -1,0 +1,87 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block links %}
+<!-- Custom CSS -->
+<link type="text/css" rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+{% block content %}
+    <!-- Inicio contenido -->
+    {% if errores %}
+  	<div class="container">
+  		<div class="row">
+  			<div class="col-12">
+  				<div class="alert alert-danger" role="alert">
+  					<p><b>No se pudo completar la operación. Se han encontrado los siguientes errores: </b></p>
+  					{% for error in errores %}
+  					{{ error }}
+  					<br>
+  					{% endfor %}
+  				</div>
+  			</div>
+  		</div>
+  	</div>
+  	{% endif %}
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="container">
+        <h1>Empresa: Nombre empresa</h1>
+        <div class='row'>
+          <div class='col-6'>
+            <label>Nombre:</label>
+            <input type="text"
+            {% if editar == False %}
+              readonly
+            {% endif %}
+            class="form-control" name="nombre"
+            value={{ empresa.nombre }}>
+            <br/>
+            <label>NIT:</label>
+            <input type="text"
+            {% if editar == False %}
+              readonly
+            {% endif %}
+            class="form-control" name="nit"
+            value={{ empresa.nit }}>
+            <br/>
+            <label>Giro:</label>
+            <input type="text"
+            {% if editar == False %}
+              readonly
+            {% endif %}
+            class="form-control" name="giro"
+            value={{ empresa.giro }}>
+            <br/>
+          </div>
+          <div class='col-6'>
+            <label>Nombre contribuyente:</label>
+            <input type="text"
+            {% if editar == False %}
+              readonly
+            {% endif %}
+            class="form-control"
+            name="contribuyente" value="{{ empresa.nombreContribuyente }}">
+            <br/>
+            <label>NRC:</label>
+            <input type="text"
+            {% if editar == False %}
+              readonly
+            {% endif %}
+            class="form-control" name="nrc"
+            value="{{ empresa.nrc }}">
+            <br/>
+          </div>
+        </div>
+        <br/>
+        <div class="row justify-content-end">
+          {% if editar != True %}
+            <a href="editar" class="btn btn-outline-warning col-1">Editar</a>
+          {% endif %}
+          {% if editar == True %}
+            <button type="submit" class="btn btn-outline-success col-1">Guardar</button>
+            <a href="/empresa" class="btn btn-outline-warning col-1 espacio_izquierda">Cancelar</a>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+    <!-- Fin contenido -->
+{% endblock content %}

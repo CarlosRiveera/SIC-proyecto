@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Libro Mayor</title>
+    </head>
+    <style type="text/css">
+        @page {
+            size: letter landscape;
+            margin: 1.5cm;
+            margin-left: 2cm;
+        }
+        table, tr, td{
+            font-size: 10pt;
+            font-family: Arial;
+            border-collapse: collapse;
+        }        
+        table th, td{
+            border: 1px solid black;
+            padding: 6px 0px 6px 5px;
+            width: 2.5cm;
+        }
+        h1, h2{
+            text-align: center;
+        }
+    </style>
+    <body>
+        <h1>DOMAINE, S.A DE C.V</h1>
+        <h2>SISTEMA DE CONTABILIDAD</h2>
+        <h2>LIBRO MAYOR</h2>
+        <br>
+        <table>
+            <tr>
+                <th>Fecha</th>
+                <th>Código</th>
+                <th style="width: 10cm;">Descripción</th>
+                <th>Debe</th>
+                <th>Haber</th>
+                <th>Saldo</th>
+            </tr>
+            {% if transacciones %}
+            {% for transaccion in transacciones %}
+            <tr>
+                <td>{{ transaccion.fecha }}</td>
+                <td>{{ transaccion.cuenta.codigoCuenta }}</td>
+                <td><b>{{ transaccion.cuenta.nombre }}</b></td>
+                {% if transaccion.tipo == 'C' %}
+                    <td><b>${{ transaccion.monto }}</b></td>
+                    <td></td>
+                {% elif transaccion.tipo == 'A' %}
+                    <td></td>
+                    <td><b>${{ transaccion.monto }}</b></td>
+                {% endif %}
+                <td>{{ transaccion.saldoParcial }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </table>
+    </body>
+</html>

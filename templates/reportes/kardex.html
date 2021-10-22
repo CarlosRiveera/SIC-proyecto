@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Kardex</title>
+    </head>
+    <style type="text/css">
+        @page {
+            size: letter landscape;
+            margin: 1.5cm;
+            margin-left: 1.5cm;
+        }
+        table, tr, td{
+            font-size: 10pt;
+            font-family: Arial;
+            border-collapse: collapse;
+        }        
+        table th, td{
+            border: 1px solid black;
+            padding: 6px 0px 6px 5px;
+            width: 2.3cm;
+            text-align: center;
+        }
+        h1{
+            text-align: center;
+        }
+    </style>
+    <body>
+        <h1>DOMAINE, S.A DE C.V</h1>
+        <h1>SISTEMA DE CONTABILIDAD</h2>
+        <table>
+            {%if kardex %}
+            <tr>
+                <th class="col-4 casilla" colspan="4">Producto: {{kardex.producto.nombre}}</th>
+                <th class="col-4 casilla" colspan="4">Stock mínimo: {{kardex.producto.stockMinimo}}</th>
+                <th class="col-4 casilla" colspan="4">Stock máximo: {{kardex.producto.stockMaximo}}</th>
+            </tr>
+            {% endif %}
+            <tr>
+                <th rowspan="2">Fecha</th>
+                <th rowspan="2">Descripción</th>
+                <th colspan="3">Entradas</th>
+                <th colspan="2">Salidas</th>
+                <th colspan="3">Existencias</th>
+            </tr>
+            <tr>
+                <!--ENTRADAS-->
+                <th>Unidad</th>
+                <th>Precio</th>
+                <th>Valor</th>
+
+                <!--SALIDAS-->
+                <th>Unidad</th>
+                <!--th>Precio</th-->
+                <th>Valor</th>
+
+                <!--EXISTENCIAS-->
+                <th>Unidad</th>
+                <th>Precio</th>
+                <th>Valor</th>
+            </tr>
+            <tbody>
+                {% for lp in lineaPeriodo %}
+                <tr > 
+                    <td >{{lp.fecha}}</td>
+                    <td >{{lp.tipoTransaccion}}</td>
+                    <td >$: {{lp.valorUnitario}}</td>
+                    <td >{{lp.cantidadEntrada}}</td>
+                    <td >$: {{lp.valorEntrada}}</td>
+                    <td >{{lp.cantidadSalida}}</td>
+                    <td >$: {{lp.valorSalida}}</td>
+                    <td >{{lp.cantidadExistencia}}</td>
+                    <td >$: {{lp.valorExistencia}}</td>
+                    <td >$: {{lp.comprobacion}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>

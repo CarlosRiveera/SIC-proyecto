@@ -1,0 +1,130 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block links %}
+<!-- Custom CSS -->
+<link type="text/css" rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+{% block content %}
+    <!-- Inicio contenido -->
+    <div class="container">
+      <h1>Cuentas</h1>
+      <br/>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class='row'>
+          <div class="col">
+            <label>Nombre</label>
+            <input type="text" class="form-control" name="nombre__icontains">
+          </div>
+          <div class="col">
+            <label>Cuenta padre</label>
+            <select class="custom-select" name="cuentaPadre_id">
+                <option value=0 selected>Ninguna</option>
+                {% if cuentas %}
+                  {% for cuentaE in cuentas %}
+                    <option value={{ cuentaE.idCuenta }}
+                    {% if cuentaE.idCuenta == cuenta.cuentaPadre.idCuenta %}
+                    selected
+                    {% endif %}
+                    >{{ cuentaE.codigoCuenta }} - {{ cuentaE.nombre }}</option>
+                  {% endfor %}
+                {% endif %}
+            </select>
+          </div>
+          <div class="col">
+            <label>Estado de cuenta</label>
+            <select class="custom-select" name="estadoCuenta">
+              <option value="" selected>Todas</option>
+              <option value="A">Acreedora</option>
+              <option value="D">Deudora</option>
+              <option value="S">Saldada</option>
+            </select>
+          </div>
+          <div class="col">
+            <label>Tipo</label>
+            <select class="custom-select" name="tipo">
+              <option value="" selected>Todas</option>
+              <option value="D">Debe</option>
+              <option value="H">Haber</option>
+            </select>
+          </div>
+          <div class="col">
+            <label>Estado</label>
+            <select class="custom-select" name="estado">
+              <option value="" selected>Todas</option>
+              <option value="A">Activa</option>
+              <option value="D">Deshabilitada</option>
+            </select>
+          </div>
+        </div>
+        <br/>
+        <div class="row justify-content-end">
+          <a href="/cuenta/crear" class="btn btn-outline-success">Nueva cuenta</a>
+          <button type="submit" class="btn btn-outline-primary espacio_izquierda">Buscar</button>
+        </div>
+      </form>
+      <br/>
+      <div class="row">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Codigo</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Saldo</th>
+              <th scope="col">Cuenta padre</th>
+              <th scope="col">Modifica inventario</th>
+              <th scope="col">Estado de cuenta</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if cuentas %}
+              {% for cuenta in cuentas %}
+                <tr>
+                  <th scope="row">{{cuenta.codigoCuenta}}</th>
+                  <td>{{cuenta.nombre}}</td>
+                  <td>{{cuenta.saldo}}</td>
+                  <td>{{cuenta.cuentaPadre.nombre}}</td>
+                  {% if cuenta.modificaInventario %}
+                    <td><i class="material-icons">check</i></td>
+                  {% else %}
+                    <td><i class="material-icons">close</i></td>
+                  {% endif %}
+                  {% if cuenta.estadoCuenta == "A" %}
+                    <td>Acreedora</td>
+                  {% endif %}
+                  {% if cuenta.estadoCuenta == "D" %}
+                    <td>Deudora</td>
+                  {% endif %}
+                  {% if cuenta.estadoCuenta == "S" %}
+                    <td>Saldada</td>
+                  {% endif %}
+                  {% if cuenta.tipo == "D" %}
+                    <td>Debe</td>
+                  {% endif %}
+                  {% if cuenta.tipo == "H" %}
+                    <td>Haber</td>
+                  {% endif %}
+                  {% if cuenta.estado == "A" %}
+                    <td>Activa</td>
+                  {% endif %}
+                  {% if cuenta.estado == "D" %}
+                    <td>Deshabilitada</td>
+                  {% endif %}
+                  <td>
+                  <a href='/cuenta/editar/{{ cuenta.idCuenta }}' class="btn btn-outline-warning">
+                    <i class="material-icons">edit</i></a>
+                  <a href='/cuenta/eliminar/{{ cuenta.idCuenta }}' class="btn btn-outline-danger">
+                    <i class="material-icons">delete</i></a>
+                  </td>
+                </tr>
+              {% endfor %}
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Fin contenido -->
+{% endblock content %}

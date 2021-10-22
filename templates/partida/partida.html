@@ -1,0 +1,245 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block links %}
+<!-- Bootstrap select CSS -->
+<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
+<!-- Custom CSS -->
+<link type="text/css" rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+{% block content %}
+    <!-- Inicio contenido -->
+    <div class="container">
+      <form action="" method="post">
+      {% csrf_token %}
+      {% if idsCtas != None%}
+      <input type="hidden" name="hidId" id="hidId" value="{{ idsCtas }}">
+      {% else %}
+      <input type="hidden" name="hidId" id="hidId" value="">
+      {% endif %}
+      <div class='row'>
+        <div class='col'>
+          <label for="colFormLabel" class="col-sm-2 col-form-label">Fecha</label>
+          <input name="fechaE" id="fechaE" type="date">
+        </div>
+        <div class='col'>
+          <label for="colFormLabel" class="col-sm-2 col-form-label">Cuenta</label>
+          <select name="seleCuenta" id="seleCuenta" class="selectpicker data-show-subtext='true'" data-live-search="true">
+            {% if cuentas %}
+            {% for cuenta in cuentas %}
+            <option value="{{ cuenta.idCuenta }}">{{cuenta.codigoCuenta}}. {{cuenta.nombre }}</option>
+            {% endfor %}
+            {% endif %}
+          </select>
+        </div>
+        <div class='col'>
+          <label for="colFormLabel" class="col-sm-2 col-form-label">Detalle</label>
+          <input name="detalle" id="detalle" class="form-control" type="text">
+        </div>
+        <div class='col'>
+          <label for="colFormLabel" class="col-sm-2 col-form-label">Tipo</label>
+          <select name="tipo" id="tipo" class="custom-select">
+            <option value="C">Debe</option>
+            <option value="A">Haber</option>
+          </select>
+        </div>
+        <div class='col'>
+          <label for="colFormLabel" class="col-sm-2 col-form-label">Monto</label>
+          <input name="monto" id="monto" class="form-control" type="text">
+        </div>
+      </div>
+      <br/>
+      <!----CUENTA CON PRODUCTO-->
+      <div class='row'>
+        <div class="col-sm-5">
+          <input name="prodSelec" id="prodSelec" class="form-control" type="hidden">
+                  <label name="Prod" id="prod" for="colFormLabel" class="col-sm-2 col-form-label">Producto</label>
+            <input name="Prod" id="prod" class="form-control" type="text" readonly>
+        </div>
+        <div class="col-sm-5">
+            <label name="cantProdK" id="cantProdK" for="colFormLabel" class="col-sm-2 col-form-label">Cantidad</label>
+            <input name="cantProdK" id="cantProdK" class="form-control" type="text" >
+        </div>
+        <div class="col-sm-5">
+            <label name="facturaK" id="facturaK" for="colFormLabel" class="col-sm-2 col-form-label">Factura</label>
+            <input name="facturaK" id="facturaK" class="form-control" type="text">
+        </div>
+        <div class="col-sm-5">
+            <label name="valorK" id="valorK" for="colFormLabel" class="col-sm-2 col-form-label">Valor Unitario</label>
+            <input name="valorK" id="valorK" class="form-control" type="text">
+        </div>        
+        <div class='col'>
+          <label name="tipoK" id="tipoK" for="colFormLabel" class="col-sm-2 col-form-label">Tipo</label>
+          <select name="tipoK" id="tipoK" class="custom-select">
+            <option value="C">Compra</option>
+            <option value="V">Venta</option>
+            <option value="DC">Devolucion de compra</option>
+            <option value="DV">Devolucion de venta</option>
+          </select>
+        </div>
+        <div class="col-sm-4">
+          <br><br>
+            <button name="cargarModal" id="cargarModal" type="button" class="btn btn-info" data-toggle="modal" data-target="#modalProductos">Seleccionar Producto</button>
+            <!-- Modal de producto -->
+            <div class="modal fade" id="modalProductos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Seleccionar producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <label for="colFormLabel" class="col-sm-2 col-form-label">Buscar</label>
+                    <input class="form-control" type="text">
+                    <table id="tblProds" class="table table-hover col-12">
+                      <thead>
+                        <tr>
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Descripcion</th>
+                          <th scope="col">En inventario</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for prods in productos%}
+                        <tr onclick="$('#Prod').value = '{{prods.nombre}}';">                          
+                          <td>{{prods.nombre}}</td>
+                          <td>{{prods.descripcion}} </td>
+                          <td>{{prods.existencias}}</td>
+                          <input type="hidden" value="{{prods.idProducto}}">                          
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <br/>
+      <div class="row justify-content-end">
+        <button type="submit" name="aggTrans" id="aggTrans" class="btn btn-outline-success col-1">Agregar</button>
+      </div>
+    
+      <h2>{{p}}</h2>
+      {% if p == 1 %}
+        <h1>{{c}}</h1>
+        {% endif %}
+        <br/>
+        <div class="row">
+          <table class="table table-hover col-12">
+            <thead>
+              <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Cuenta</th>
+                <th scope="col">Detalle</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Debe</th>
+                <th scope="col">Haber</th>
+                <th scope="col">Accion</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for trans in trans%}
+              <tr>
+                <th scope="row">{{trans.fecha}}</th>
+                <td>{{trans.cuenta.nombre}} </td>
+                <td>{{trans.detalle}} </td>
+                <td><!--button type="button" class="btn btn-outline-primary">Detalles producto</button--></td>
+                {% if trans.tipo == 'C'%}
+                <td>{{trans.monto}}</td>
+                <td></td>
+                {% else %}
+                <td></td>
+                <td>{{trans.monto}}</td>
+                {% endif %}
+                <td>
+                  <button type="submit" name="eliminarTrans" id="eliminarTrans" value="{{trans.idTransaccion}}" class="btn btn-outline-danger">Eliminar</button>
+                  <input type="hidden" name="elimTran" id="elimTran" value="{{trans.idTransaccion}}">
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </form>
+      <br/>
+      <div class="row justify-content-end">
+          {% if idsCtas != None%}  <!--revertiendo a button-->      
+          <button type="button" name="cancel" onclick="location.href='cancelar/{{ idsCtas }}'; salval = 1;" class="btn btn-outline-danger col-1">Cancelar</button>
+          {% else %}
+          <button type="button" name="cancel" onclick="location.href='/partida/'; salval = 1;" class="btn btn-outline-danger col-1">Cancelar</button>
+          {% endif %}
+        <button type="button" onclick="location.href='/partida/'; salval = 1;" class="btn btn-outline-success col-1 espacio_izquierda" >Guardar</button>
+      </div>
+      <br/>
+
+    </div>
+    <!-- Fin contenido -->
+    <!-- Bootstrap select JS  -->
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/bootstrap-select.min.js' %}"></script>
+{% csrf_token %}
+<script type="text/javascript" src="{% static 'js/transaccion/transaccion.js' %}"></script>
+<script>
+  var salval = 0;
+  HideOrShow(0);
+
+  $('[name="seleCuenta"]').change(function () {    
+  var end = this.value;
+  var mostrar = 0;
+  var cuentaModInv = {{ cuentasModInv }} ;
+  jQuery.each(cuentaModInv, function(Cindex, Cvalue) {
+    if (end == Cvalue){
+      mostrar = 1;      
+    }
+  });
+  HideOrShow(mostrar);
+  });
+
+  function HideOrShow(acc){
+    if (acc == 1){
+        $('[name="cantProdK"]').show();
+        $('[name="Prod"]').show();
+        $('[name="cargarModal"]').show();
+        $('[name="valorK"]').show();
+        $('[name="facturaK"]').show();
+        $('[name="tipoK"]').show();
+    }else if (acc == 0){
+        $('[name="cantProdK"]').hide();
+        $('[name="Prod"]').hide();
+        $('[name="cargarModal"]').hide();
+        $('[name="valorK"]').hide();
+        $('[name="facturaK"]').hide();
+        $('[name="tipoK"]').hide();
+    }
+}
+
+$(window).bind('beforeunload', function(){
+  if (salval == 0) {
+  salida();
+  }
+});
+
+$(document).ready(function() {
+    $(document).on("click", "#tblProds tbody tr", function() {
+      var valores = $(this).find('td').map(function() {
+        return $(this).text();
+      });
+      var id = $(this).find('input').map(function() {
+        return $(this).val();
+      });
+      $('[name="prodSelec"]').val(id[0]);
+      $('[name="Prod"]').val(valores[0]);
+    });
+});
+
+function salida(){
+  console.log("adioooos");  
+  //ejecutar funcion de cancelar Ni modo con ajax :'v
+}
+
+</script>
+{% endblock %}
