@@ -25,7 +25,7 @@ def resumenPartida(request):
     else:
         today = datetime.today()
         Trans = Transaccion.objects.filter(fecha__year= today.year, fecha__month=today.month).order_by('fecha')
-    fechasMes = Trans.distinct('fecha')
+    fechasMes = Trans.distinct()
     fechaDisplay = getFechasEncabezado(Trans, fechasMes)
     i = 0
     for t in Trans:        
@@ -53,7 +53,7 @@ def cargarXCP(request, cuentaPadre):
         else:
             Trans = Transaccion.objects.filter(fecha__year= today.year, fecha__month=today.month, cuenta__cuentaPadre__codigoCuenta = cuentaPadre).order_by('fecha')    
     #consiguiendo las fechas
-    fechasMes = Trans.distinct('fecha')
+    fechasMes = Trans.distinct()
     fechaDisplay = getFechasEncabezado(Trans, fechasMes)
     i = 0
     for t in Trans:        
@@ -79,7 +79,7 @@ def cargarXCPFe(request, cuentaPadre,anio,mes): ## agg request POST
     else: #Agregar fecha actual (ni debe entrar aqui xd)
         Trans = Transaccion.objects.filter(cuenta__cuentaPadre__codigoCuenta = cuentaPadre).order_by('fecha')    
     #consiguiendo las fechas
-    fechasMes = Trans.distinct('fecha')
+    fechasMes = Trans.distinct()
     fechaDisplay = getFechasEncabezado(Trans, fechasMes)
     i = 0
     for t in Trans:        

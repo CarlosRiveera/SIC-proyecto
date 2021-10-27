@@ -13,7 +13,7 @@
 </head>
 <body>
 	{% block menu %}
-	<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<!--a class="navbar-brand" href="#">Navbar</a-->
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -74,8 +74,6 @@
 	<script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
 	{% block scripts %}
-	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-
 	{% endblock %}
 </body>
 </html>

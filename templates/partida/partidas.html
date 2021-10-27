@@ -20,20 +20,24 @@
             {% endif%}
           </select>
         </div>
-        <form action="" method="post">
-          {% csrf_token %}
-          <div class="col-4">
-
-          </div>
-          {%if anio != None and mes != None%}
-          <input name="MP" id="MP" type="month" value="{{anio}}-{{mes}}" class="form-control">
-          {%else%}
-          <input name="MP" id="MP" type="month" class="form-control">
-          {% endif %}
-          <div class="col-2">
-          <button name="BFE" id="BFE" class="btn btn-outline-primary" type="submit">Ver</button>
-          </div>
-        </form>
+        <div class="col-6">
+          <form action="" method="post">
+            {% csrf_token %}
+            
+              {%if anio != None and mes != None%}
+              <div class="col-4">
+                <input name="MP" id="MP" type="month" value="{{anio}}-{{mes}}" class="form-control">
+              </div>
+              {%else%}
+              <div class="col-md-4">
+                <input name="MP" id="MP" type="month" class="form-control">
+              </div>
+              {% endif %}
+            <div class="col-md-1">
+              <button name="BFE" id="BFE" class="btn btn-outline-primary" type="submit">Ver</button>
+            </div>
+          </form>
+        </div>
       </div>
       <br>
       <div class='row'>

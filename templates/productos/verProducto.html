@@ -9,84 +9,71 @@
 {% block content %}
 <title>Productos</title>
 <style type="text/css">
-  .asideIzq
-{
-        float: left;
-        
-    }
-    .asideDer
-{
-        float: center;
-        
-    }
-    .Fecha{
-width:200px;
-
-}
+  .Fecha{width:200px;}
 </style>
-    <aside class="asideIzq">
-      <form method="post">
-              {%csrf_token%}
-              <div class="row" >
-                <label name="fechaK" id="fechaK" for="colFormLabel" class="col-sm-2 col-form-label">Fecha</label>
-                <input name="fechaK" id="fechaK" class="form-control Fecha" type="date">
-                <button style=" text-align: center;" type="submit" class="btn btn-primary">Cierre Contable</button>
-              </div>
-
-            </form>
-    </aside>
-    <aside class="asideDer">
-      <h1 class="d-flex justify-content-center">Productos en inventario</h1>
-    </aside>
-        
+  <aside class="asideDer">
+    <h1 class="d-flex justify-content-center">Productos en inventario</h1>
+  </aside>
+  <br>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-6 align-self-center">
+        <aside class="asideIzq">
+          <form method="post">
+            {%csrf_token%}
+            <div class="row" >
+              <label name="fechaK" id="fechaK" for="colFormLabel" class="col-sm-2 col-form-label">Fecha</label>
+              <input name="fechaK" id="fechaK" class="form-control Fecha" type="date">
+              <button style=" text-align: center;" type="submit" class="btn btn-primary">Cierre Contable</button>
+            </div>
+          </form>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="container">
+      <div class="row">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Marca</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Stock Minimo</th>
+            <th scope="col">Stock Maximo</th>
+            <th scope="col">Existencias</th>
+            <th scope="col"> <a class="btn btn-info" href="{%url 'registrarProducto'%}">Agregar</a></th>
+          </tr>
+        </thead>  
+          <tbody>
+          {%if productos%}
+            {% for Producto in productos%}
+            <tr>
+            <td>{{Producto.nombre}}</td>
+            <td>{{Producto.descripcion}}</td>
+            <td>{{Producto.marca}}</td>
+            <td>{{Producto.categoria}}</td>
+            <td>{{Producto.estado}}</td>
+            <td>{{Producto.stockMinimo}}</td>
+            <td>{{Producto.stockMaximo}}</td>
+            <td>{{Producto.existencias}}</td>
+            <td>
+            <a href="{%url 'updateProducto' Producto.idProducto%}" class="btn btn-outline-warning"><i class="material-icons">edit</i></a>
+            <a class="btn btn-secondary" href="{%url 'Periodos' Producto.idProducto%}">Kardex</a>  
+            </td>
+            </tr>
             
-           
-            
-            <br> 
-      
-      </form>
+            {% endfor %}
+          
+          {% endif%}
 
-      <div style="right:53%;text-align: center" class="d-inline-flex pl-5">
-      <table style="right:53%;text-align: center;"class="table table-bordered">
-  <thead style="text-align: center;">
-    <tr style="text-align: center; background-color: #B1A2D6;">
-      <td scope="col">Nombre</td>
-      <td scope="col">Descripción</td>
-      <td scope="col">Marca</td>
-      <td scope="col">Categoria</td>
-      <td scope="col">Estado</td>
-      <td scope="col">Stock Minimo</td>
-      <td scope="col">Stock Maximo</td>
-      <td scope="col">Existencias</td>
-      <td scope="col"> <a class="btn btn-info" href="{%url 'registrarProducto'%}">Agregar</a></td>
-    </tr>
-  </thead>  
-    <tbody>
-    {%if productos%}
-
-      {% for Producto in productos%}
-      
-      <tr style="background-color: #E9C69A;">
-      <td>{{Producto.nombre}}</td>
-      <td>{{Producto.descripcion}}</td>
-      <td>{{Producto.marca}}</td>
-      <td>{{Producto.categoria}}</td>
-      <td>{{Producto.estado}}</td>
-      <td>{{Producto.stockMinimo}}</td>
-      <td>{{Producto.stockMaximo}}</td>
-      <td>{{Producto.existencias}}</td>
-      <td>
-       <a class="btn btn-primary" href="{%url 'updateProducto' Producto.idProducto%}">Editar</a>
-        <a class="btn btn-secondary" href="{%url 'Periodos' Producto.idProducto%}">Kardex</a>  
-      </td>
-      </tr>
-      
-      {% endfor %}
-    
-    {% endif%}
-
-    </tbody>
-  </table>
+          </tbody>
+        </table>
+      </div>
+  </div>
 
    
 {% endblock %}
