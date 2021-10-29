@@ -84,8 +84,7 @@ def eliminarCuenta(request, idCuenta):
 
 def validarDatos(nombre, cuentaPadre, codigoCuenta, saldo, estadoCuenta, estado, tipo):
     errores = set()
-    if(not re.match("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ0-9 ]+$", nombre)):
-        errores.add('Nombre de cuenta inválido')
+    
     if (not re.match("^[0-9]*$", cuentaPadre) or cuentaPadre == ""):
         errores.add("Cuenta padre inválida")
     if (not re.match("^[0-9\.]+$", codigoCuenta)):

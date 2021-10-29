@@ -10,12 +10,10 @@ class Producto(models.Model):
     existencias = models.IntegerField(default=0)
     stockMinimo= models.IntegerField()
     stockMaximo= models.IntegerField() 
-    #marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
-    #categoria = models.ForeignKey(CategoriaProducto, on_delete=models.CASCADE)
     marca= models.CharField(max_length=20)
     CATEGORIA = (
-        ('Bolsos para Hombres', 'Bolsos para hombres'),
-        ('Bolsos para Mujeres', 'Bolsos para mujeres')
+        ('Zapato para Hombres', 'Zapato para hombres'),
+        ('Zapato para Mujeres', 'Zapato para mujeres')
     )
     categoria= models.CharField(max_length=20, choices=CATEGORIA, default='Bolsos para Mujeres')
     ESTADO = (

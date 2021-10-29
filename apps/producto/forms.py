@@ -16,7 +16,6 @@ class ProductoForm(forms.ModelForm):
 		fields =[
 		'nombre',
 		'descripcion',
-		#'existencias',
 		'marca',
 		'categoria',
 		'estado',
@@ -28,7 +27,6 @@ class ProductoForm(forms.ModelForm):
 		labels = {
 		'nombre': 'Nombre',
 		'descripcion':'Descripcion',
-		#'existencias': 'Existencias',
 		'marca': 'Marca',
 		'categoria':'Categoria',
 		'estado':'Estado',
@@ -44,7 +42,6 @@ class ProductoForm(forms.ModelForm):
 		'estado': forms.Select(attrs={'class':'form-control'}),
 		'stockMinimo': forms.TextInput(attrs={'class':'form-control'}),
 		'stockMaximo': forms.TextInput(attrs={'class':'form-control'})
-		#'existencias': forms.TextInput(attrs={'class':'form-control'})		
 		}
 
 		def cleanNombre(self):

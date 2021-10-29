@@ -23,7 +23,7 @@
 				{% for modulo in request.session.modulos %}
 					{% if modulo == 'Producto' %}
 					<li class="nav-item">
-						<a class="nav-link" href="/productos/">Inventario</a>
+						<a class="nav-link" href="/productos/">Productos en inventario</a>
 					</li>
 					{% endif %}
 				{% endfor %}
@@ -34,11 +34,27 @@
 					<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuContabilidad">
 							{% for modulo in request.session.modulos %}
 								{% if modulo == 'Cuenta' %}
-									<a class="dropdown-item" href="/cuenta/">Cuentas</a>
+									<a class="dropdown-item" href="/cuenta/">Administracion de cuentas</a>
 								{% endif %}
 								{% if modulo == 'Transacciones' %}
 									<a class="dropdown-item" href="/partida/">Libro diario</a>
-									<a class="dropdown-item" href="">Reportes</a>
+								{% endif %}
+							{% endfor %}
+					</div>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuContabilidad" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Reportes
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuContabilidad">
+							{% for modulo in request.session.modulos %}
+								{% if modulo == 'Transacciones' %}
+									<a class="dropdown-item" href="/reportes/libroDiario">Reporte libro diario</a>
+									<a class="dropdown-item" href="/reportes/libroMayor">Reporte libro mayor</a>
+									<a class="dropdown-item" href="/reportes/balanceGeneral">Reporte balance general</a>
+									<a class="dropdown-item" href="/reportes/estadoResultado">Reporte estado de resultado</a>
+									<a class="dropdown-item" href="/reportes/flujoEfectivo">Reporte flujo de efectivo</a>
+									<a class="dropdown-item" href="/reportes/kardex/4">Reporte kardex</a>
 								{% endif %}
 							{% endfor %}
 					</div>

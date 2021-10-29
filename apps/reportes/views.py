@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required
 import tempfile
+from weasyprint import HTML
 
 from django.db.models import Sum
 from apps.transaccion.models import Transaccion
@@ -21,7 +22,20 @@ import calendar
 #import xhtml2pdf.pisa as pisa
 
 # Create your views here.
-
+def renderPdf(url_template, data={}):
+    template = get_template(url_template)
+    html_string = render_to_string(url_template, data)
+    html = HTML(string=html_string)
+    result = html.write_pdf()
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="libroDiario.pdf"'
+    response['Content-Transfer-Encoding'] = 'binary'
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output.seek(0)
+        response.write(output.read())
+    return response
 
 def libroDiario(request):
     #asientos = Transaccion.models.filter
@@ -34,7 +48,7 @@ def libroDiario(request):
     #fechaInicio = str(anio) + "-" + ('{:02d}'.format(mes)) + "-01"
     #fechaFin = str(anio) + "-" + ('{:02d}'.format(mes)) + "-" + str(dias[1])
     fechaInicio = str(anio) + "-01-01"
-    fechaFin = str(anio) + "-01-01"
+    fechaFin = str(anio) + "-12-31"
     #if fechaInicio is not "":
     #    fecha = datetime.strptime(fechaInicio, '%d/%m/%Y')
     #    fechaStr = fecha.strftime('%Y-%m-%d')
